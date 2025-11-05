@@ -1,12 +1,5 @@
-// 1_7_1 Splitting a list in two 
-/*
-  В этом примере показан список всех людей.
-
-  Измените его, чтобы последовательно вывести два отдельных списка: Химики и Все остальные. Как и ранее, вы можете определить, является ли человек химиком, проверив, что person.profession === 'chemist'.
-*/
-
-import { people } from './data.js';
-import { getImageUrl } from './utils.js';
+import { people } from './data.ts';
+import { getImageUrl } from './utils.ts';
 
 export type Person = {
   id: number;
@@ -17,23 +10,46 @@ export type Person = {
 }
 
 export default function List() {
-    const listItems = people.map((person) => (
-        <li key={person.id}>
+  const chemists = people.filter(person =>
+    person.profession === 'chemist'
+  );
+  const everyoneElse = people.filter(person =>
+    person.profession !== 'chemist'
+  );
+  return (
+    <article>
+      <h1>Chemists</h1>
+      <ul>
+        {chemists.map(person =>
+          <li key={person.id}>
             <img
-                src={getImageUrl(person)}
-                alt={person.name}
+              src={getImageUrl(person)}
+              alt={person.name}
             />
             <p>
-                <b>{person.name}:</b>
-                {' ' + person.profession + ' '}
-                known for {person.accomplishment}
+              <b>{person.name}:</b>
+              {' ' + person.profession + ' '}
+              known for {person.accomplishment}
             </p>
-        </li>
-    ));
-    return (
-        <article>
-            <h1>Scientists</h1>
-            <ul>{listItems}</ul>
-        </article>
-    );
+          </li>
+        )}
+      </ul>
+      <h1>Everyone Else</h1>
+      <ul>
+        {everyoneElse.map(person =>
+          <li key={person.id}>
+            <img
+              src={getImageUrl(person)}
+              alt={person.name}
+            />
+            <p>
+              <b>{person.name}:</b>
+              {' ' + person.profession + ' '}
+              known for {person.accomplishment}
+            </p>
+          </li>
+        )}
+      </ul>
+    </article>
+  );
 }
