@@ -1,11 +1,6 @@
-// 1_1_2 Fix the return statement 
-/* 
-  Исправьте ошибку в операторе return
-*/
-
+// Компонент Profile исправлен: возвращаемое значение теперь на той же строке, что и оператор return
 export default function Profile() {
-    return
-      <img src="KatsukoSaruhashi.jpg" alt="Katsuko Saruhashi" />;
-  }
-  
-  
+  return (
+    <img src="KatsukoSaruhashi.jpg" alt="Katsuko Saruhashi" />
+  );
+}
