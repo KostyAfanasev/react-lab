@@ -3,7 +3,13 @@ import { Que } from "./App";
 export function getFinalState(baseState: number, queue: Que[]) {
     let finalState = baseState;
 
-    // TODO: do something with the queue...
+    for (const update of queue) {
+        if (typeof update === 'function') {
+            finalState = update(finalState);
+        } else {
+            finalState = update;
+        }
+    }
 
     return finalState;
 }
