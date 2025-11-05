@@ -1,8 +1,3 @@
-// 2_7_1 Update an item in the shopping cart 
-/*
-    Заполните логику handleIncreaseClick так, чтобы нажатие "+" увеличивало соответствующее число.
-*/
-
 import { useState } from 'react';
 
 const initialProducts = [
@@ -28,7 +23,11 @@ export default function ShoppingCart() {
         initialProducts
     );
 
-    function handleIncreaseClick(productId: number) { }
+    function handleIncreaseClick(productId: number) {
+        setProducts(products.map(p =>
+            p.id === productId ? { ...p, count: p.count + 1 } : p
+        ));
+    }
 
     return (
         <ul>
