@@ -1,15 +1,55 @@
-// 3_1_3 Refactor the imperative solution without React
-/*
-    В проекте приведена форма, реализованная на чистом JavaScript.
-
-    Эта форма переключается между двумя режимами: в режиме редактирования вы видите вводимые данные, а в режиме просмотра - только результат. Метка кнопки меняется между "Редактировать" и "Сохранить" в зависимости от того, в каком режиме вы находитесь. Когда вы изменяете вводимые данные, приветственное сообщение внизу обновляется в режиме реального времени.
-
-    Представьте, что React не существует. Можете ли вы переделать код в index.js таким образом, чтобы сделать логику менее хрупкой и более похожей на версию React? Как бы это выглядело, если бы состояние было явным, как в React?
-*/
-
+import { useState } from 'react';
 
 export default function EditProfile() {
+    const [isEditing, setIsEditing] = useState(false);
+    const [firstName, setFirstName] = useState('Taylor');
+    const [lastName, setLastName] = useState('Swift');
+
+    const handleFormSubmit = (e: any) => {
+        e.preventDefault();
+        setIsEditing(!isEditing);
+    };
+
+    const handleFirstNameChange = (e: any) => {
+        setFirstName(e.target.value);
+    };
+
+    const handleLastNameChange = (e: any) => {
+        setLastName(e.target.value);
+    };
+
     return (
-        <div></div>
+        <form onSubmit={handleFormSubmit}>
+            <label>
+                First name:{' '}
+                {isEditing ? (
+                    <input
+                        id="firstNameInput"
+                        value={firstName}
+                        onChange={handleFirstNameChange}
+                    />
+                ) : (
+                    <b id="firstNameText">{firstName}</b>
+                )}
+            </label>
+            <label>
+                Last name:{' '}
+                {isEditing ? (
+                    <input
+                        id="lastNameInput"
+                        value={lastName}
+                        onChange={handleLastNameChange}
+                    />
+                ) : (
+                    <b id="lastNameText">{lastName}</b>
+                )}
+            </label>
+            <button type="submit" id="editButton">
+                {isEditing ? 'Save Profile' : 'Edit Profile'}
+            </button>
+            <p id="helloText">
+                Hello {firstName} {lastName}!
+            </p>
+        </form>
     );
 }
