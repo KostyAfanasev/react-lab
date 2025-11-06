@@ -1,10 +1,3 @@
-// 3_4_3 Reset a detail form
-/*
-  Это редактируемый список контактов. Вы можете редактировать данные выбранного контакта, а затем либо нажать "Сохранить", чтобы обновить его, либо "Сбросить", чтобы отменить изменения.
-
-  Когда вы выбираете другой контакт (например, Алису), состояние обновляется, но форма продолжает показывать данные предыдущего контакта. Исправьте это так, чтобы форма сбрасывалась при изменении выбранного контакта.
-*/
-
 import { useState } from 'react';
 import ContactList from './ContactList';
 import EditContact from './EditContact';
@@ -42,6 +35,7 @@ export default function ContactManager() {
       />
       <hr />
       <EditContact
+        key={selectedContact.id}
         initialData={selectedContact}
         onSave={handleSave}
       />
