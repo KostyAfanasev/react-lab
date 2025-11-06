@@ -1,13 +1,5 @@
-// 3_6_1  Replace prop drilling with context
-/*
-  В этом примере переключение флажка изменяет параметр imageSize, передаваемый каждому <PlaceImage>. Состояние флажка хранится в компоненте верхнего уровня App, но каждый <PlaceImage> должен знать об этом.
-
-  В настоящее время App передает imageSize в List, который передает его в каждое Place, которое передает его в PlaceImage. Удалите пропс imageSize, и вместо этого передавайте его из компонента App непосредственно в PlaceImage.
-
-  Вы можете объявить контекст в файле Context.js.
-*/
-
 import { useState } from 'react';
+import { ImageSizeContext } from './Context';
 import { places, PlaceType } from './data';
 import { getImageUrl } from './utils';
 
@@ -27,17 +19,18 @@ export default function App() {
         Use large images
       </label>
       <hr />
-      <List imageSize={imageSize} />
+      <ImageSizeContext.Provider value={imageSize}>
+        <List />
+      </ImageSizeContext.Provider>
     </>
   )
 }
 
-function List({ imageSize }: { imageSize: number }) {
+function List() {
   const listItems = places.map(place =>
     <li key={place.id}>
       <Place
         place={place}
-        imageSize={imageSize}
       />
     </li>
   );
@@ -45,14 +38,13 @@ function List({ imageSize }: { imageSize: number }) {
 }
 
 function Place(
-  { place, imageSize }: 
-  { place: PlaceType, imageSize: number }
+  { place }:
+  { place: PlaceType }
 ) {
   return (
     <>
       <PlaceImage
         place={place}
-        imageSize={imageSize}
       />
       <p>
         <b>{place.name}</b>
@@ -62,10 +54,13 @@ function Place(
   );
 }
 
+import { useImageSize } from './Context';
+
 function PlaceImage(
-  { place, imageSize }:
-    { place: PlaceType, imageSize: number }
+  { place }:
+    { place: PlaceType }
 ) {
+  const imageSize = useImageSize();
   return (
     <img
       src={getImageUrl(place)}
