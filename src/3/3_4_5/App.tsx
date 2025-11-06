@@ -1,20 +1,26 @@
-// 3_4_5 Fix misplaced state in the list 
-/*
-  В этом списке каждый Contact имеет состояние, которое определяет, была ли для него нажата галочка "Показать почту". Нажмите "Показать почту" для Алисы, а затем установите флажок "Показывать в обратном порядке". Вы заметите, что письмо Тейлора теперь развернуто, а письмо Алисы, которое переместилось в самый низ, кажется свернутым.
-
-  Исправьте это так, чтобы развернутое состояние было связано с каждым контактом, независимо от выбранного порядка.
-*/
-
 import { useState } from 'react';
 import Contact from './Contact';
 
 export default function ContactList() {
   const [reverse, setReverse] = useState(false);
+  const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
 
   const displayedContacts = [...contacts];
   if (reverse) {
     displayedContacts.reverse();
   }
+
+  const toggleExpanded = (id: number) => {
+    setExpandedIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
 
   return (
     <>
@@ -29,9 +35,13 @@ export default function ContactList() {
         Show in reverse order
       </label>
       <ul>
-        {displayedContacts.map((contact, i) =>
-          <li key={i}>
-            <Contact contact={contact} />
+        {displayedContacts.map((contact) =>
+          <li key={contact.id}>
+            <Contact
+              contact={contact}
+              expanded={expandedIds.has(contact.id)}
+              onToggleExpanded={() => toggleExpanded(contact.id)}
+            />
           </li>
         )}
       </ul>
