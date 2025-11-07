@@ -1,3 +1,5 @@
+// Интервал корректно очищается при размонтировании компонента
+
 import { useState, useEffect } from 'react';
 
 export default function Counter() {
@@ -8,7 +10,10 @@ export default function Counter() {
       setCount(c => c + 1);
     }
 
-    setInterval(onTick, 1000);
+    const intervalId = setInterval(onTick, 100);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   return <h1>{count}</h1>;
