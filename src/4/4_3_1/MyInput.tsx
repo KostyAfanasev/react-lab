@@ -1,3 +1,6 @@
+// Использован useEffect с пустым массивом зависимостей для фокусировки на поле при монтировании
+// Поле ввода автоматически получает фокус при появлении на экране
+
 import { useEffect, useRef } from 'react';
 
 export default function MyInput(
@@ -9,10 +12,11 @@ export default function MyInput(
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     }) {
 
-    const ref = useRef(null);
+    const ref = useRef<HTMLInputElement>(null);
 
-    // TODO: This doesn't quite work. Fix it.
-    // ref.current.focus()    
+    useEffect(() => {
+        ref.current?.focus();
+    }, []);
 
     return (
         <input
